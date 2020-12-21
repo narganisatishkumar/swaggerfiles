@@ -1,0 +1,229 @@
+openapi: 3.0.1
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+  - url: 'http://localhost:8080/entitlements/v1/'
+    description: Generated server url
+paths:
+  /groups:
+    get:
+      tags:
+        - entitlements-api
+      operationId: getGroups
+      responses:
+        '200':
+          description: default response
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Groups'
+    post:
+      tags:
+        - entitlements-api
+      operationId: createGroup
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateGroupRequest'
+      responses:
+        '200':
+          description: default response
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/GroupInfo'
+  '/groups/{group_email}/members/{group_member}':
+    delete:
+      tags:
+        - entitlements-api
+      operationId: removeMember
+      parameters:
+        - name: group_email
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: group_member
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: object
+  '/groups/{group_email}/members':
+    get:
+      tags:
+        - entitlements-api
+      operationId: getGroupMembers
+      parameters:
+        - name: group_email
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  type: string
+    post:
+      tags:
+        - entitlements-api
+      operationId: addGroupMembers
+      parameters:
+        - name: group_email
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+      responses:
+        '200':
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  type: string
+  /profile:
+    put:
+      tags:
+        - entitlements-api
+      operationId: updateProfile
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserInfoDoc'
+      responses:
+        '200':
+          description: default response
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/UserInfoDoc'
+    post:
+      tags:
+        - entitlements-api
+      operationId: createProfile
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserInfoDoc'
+      responses:
+        '200':
+          description: default response
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/UserInfoDoc'
+  '/profile/{id}':
+    delete:
+      tags:
+        - entitlements-api
+      operationId: deleteProfile
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: object
+  '/members/{member_email}/groups':
+    get:
+      tags:
+        - entitlements-api
+      operationId: getGroupsOnBehalfOf
+      parameters:
+        - name: member_email
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  type: string
+components:
+  schemas:
+    CreateGroupRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+    GroupInfo:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        description:
+          type: string
+    Groups:
+      type: object
+      properties:
+        groups:
+          type: array
+          items:
+            $ref: '#/components/schemas/GroupInfo'
+        memberEmail:
+          type: string
+        desId:
+          type: string
+        groupNames:
+          type: array
+          items:
+            type: string
+    UserInfoDoc:
+      type: object
+      properties:
+        id:
+          type: string
+        uid:
+          type: string
+        tenants:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserTenantItem'
+    UserTenantItem:
+      type: object
+      properties:
+        name:
+          type: string
+        groups:
+          type: array
+          items:
+            type: string

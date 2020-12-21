@@ -1,0 +1,1993 @@
+swagger: '2.0'
+info:
+  description: Api Documentation
+  version: '1.0'
+  title: Api Documentation
+  termsOfService: 'urn:tos'
+  contact: {}
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0'
+host: 'localhost:8084'
+basePath: /api/crs/catalog
+tags:
+  - name: crs-catalog-api
+    description: Crs Catalog Api
+  - name: health-check
+    description: Health Check
+paths:
+  /_ah/liveness_check:
+    get:
+      tags:
+        - health-check
+      summary: livenessCheck
+      operationId: livenessCheckUsingGET
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      parameters:
+        - name: data-partition-id
+          in: header
+          description: tenant
+          required: true
+          type: string
+          default: opendes
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: string
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      security:
+        - Bearer Authorization: []
+  /_ah/readiness_check:
+    get:
+      tags:
+        - health-check
+      summary: readinessCheck
+      operationId: readinessCheckUsingGET
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      parameters:
+        - name: data-partition-id
+          in: header
+          description: tenant
+          required: true
+          type: string
+          default: opendes
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: string
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      security:
+        - Bearer Authorization: []
+  /v2/area:
+    get:
+      tags:
+        - crs-catalog-api
+      summary: getAreasOfUse
+      operationId: getAreasOfUseUsingGET
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      parameters:
+        - name: data-partition-id
+          in: header
+          description: tenant
+          required: true
+          type: string
+          default: opendes
+        - name: offset
+          in: query
+          description: offset
+          required: false
+          type: integer
+          default: 0
+          format: int32
+        - name: limit
+          in: query
+          description: limit
+          required: false
+          type: integer
+          default: 100
+          format: int32
+        - name: mode
+          in: query
+          description: mode
+          required: false
+          type: string
+          default: persistableReference
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/AreaOfUseResults'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      security:
+        - Bearer Authorization: []
+    post:
+      tags:
+        - crs-catalog-api
+      summary: getAreaOfUse
+      operationId: getAreaOfUseUsingPOST
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      parameters:
+        - name: data-partition-id
+          in: header
+          description: tenant
+          required: true
+          type: string
+          default: opendes
+        - in: body
+          name: request
+          description: request
+          required: true
+          schema:
+            $ref: '#/definitions/AreaOfUseRequest'
+        - name: mode
+          in: query
+          description: mode
+          required: false
+          type: string
+          default: persistableReference
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/AreaOfUse'
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      security:
+        - Bearer Authorization: []
+  /v2/catalog:
+    get:
+      tags:
+        - crs-catalog-api
+      summary: getCatalog
+      operationId: getCatalogUsingGET
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      parameters:
+        - name: data-partition-id
+          in: header
+          description: tenant
+          required: true
+          type: string
+          default: opendes
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Catalog'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      security:
+        - Bearer Authorization: []
+  /v2/catalog/attributes:
+    get:
+      tags:
+        - crs-catalog-api
+      summary: getCatalogAttributes
+      operationId: getCatalogAttributesUsingGET
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      parameters:
+        - name: data-partition-id
+          in: header
+          description: tenant
+          required: true
+          type: string
+          default: opendes
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/CatalogAttributes'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      security:
+        - Bearer Authorization: []
+  /v2/compoundcrs:
+    get:
+      tags:
+        - crs-catalog-api
+      summary: getCompoundCRSes
+      operationId: getCompoundCRSesUsingGET
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      parameters:
+        - name: data-partition-id
+          in: header
+          description: tenant
+          required: true
+          type: string
+          default: opendes
+        - name: offset
+          in: query
+          description: offset
+          required: false
+          type: integer
+          default: 0
+          format: int32
+        - name: limit
+          in: query
+          description: limit
+          required: false
+          type: integer
+          default: 100
+          format: int32
+        - name: mode
+          in: query
+          description: mode
+          required: false
+          type: string
+          default: persistableReference
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/CompoundCRSResults'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      security:
+        - Bearer Authorization: []
+    post:
+      tags:
+        - crs-catalog-api
+      summary: getCompoundCRS
+      operationId: getCompoundCRSUsingPOST
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      parameters:
+        - name: data-partition-id
+          in: header
+          description: tenant
+          required: true
+          type: string
+          default: opendes
+        - in: body
+          name: request
+          description: request
+          required: true
+          schema:
+            $ref: '#/definitions/CompoundCRSRequest'
+        - name: mode
+          in: query
+          description: mode
+          required: false
+          type: string
+          default: persistableReference
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/CompoundCRS'
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      security:
+        - Bearer Authorization: []
+  /v2/compoundct:
+    get:
+      tags:
+        - crs-catalog-api
+      summary: getCompoundCTs
+      operationId: getCompoundCTsUsingGET
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      parameters:
+        - name: data-partition-id
+          in: header
+          description: tenant
+          required: true
+          type: string
+          default: opendes
+        - name: offset
+          in: query
+          description: offset
+          required: false
+          type: integer
+          default: 0
+          format: int32
+        - name: limit
+          in: query
+          description: limit
+          required: false
+          type: integer
+          default: 100
+          format: int32
+        - name: mode
+          in: query
+          description: mode
+          required: false
+          type: string
+          default: persistableReference
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/CompoundCTResults'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      security:
+        - Bearer Authorization: []
+    post:
+      tags:
+        - crs-catalog-api
+      summary: getCompoundCT
+      operationId: getCompoundCTUsingPOST
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      parameters:
+        - name: data-partition-id
+          in: header
+          description: tenant
+          required: true
+          type: string
+          default: opendes
+        - in: body
+          name: request
+          description: request
+          required: true
+          schema:
+            $ref: '#/definitions/CompoundCTRequest'
+        - name: mode
+          in: query
+          description: mode
+          required: false
+          type: string
+          default: persistableReference
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/CompoundCT'
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      security:
+        - Bearer Authorization: []
+  /v2/crs:
+    get:
+      tags:
+        - crs-catalog-api
+      summary: getAllCRSes
+      operationId: getAllCRSesUsingGET
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      parameters:
+        - name: data-partition-id
+          in: header
+          description: tenant
+          required: true
+          type: string
+          default: opendes
+        - name: offset
+          in: query
+          description: offset
+          required: false
+          type: integer
+          default: 0
+          format: int32
+        - name: limit
+          in: query
+          description: limit
+          required: false
+          type: integer
+          default: 100
+          format: int32
+        - name: mode
+          in: query
+          description: mode
+          required: false
+          type: string
+          default: persistableReference
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/CRSResults'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      security:
+        - Bearer Authorization: []
+    post:
+      tags:
+        - crs-catalog-api
+      summary: getCRS
+      operationId: getCRSUsingPOST
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      parameters:
+        - name: data-partition-id
+          in: header
+          description: tenant
+          required: true
+          type: string
+          default: opendes
+        - in: body
+          name: request
+          description: request
+          required: true
+          schema:
+            $ref: '#/definitions/CRSRequest'
+        - name: mode
+          in: query
+          description: mode
+          required: false
+          type: string
+          default: persistableReference
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/CRS'
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      security:
+        - Bearer Authorization: []
+  /v2/ct:
+    get:
+      tags:
+        - crs-catalog-api
+      summary: getAllCTs
+      operationId: getAllCTsUsingGET
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      parameters:
+        - name: data-partition-id
+          in: header
+          description: tenant
+          required: true
+          type: string
+          default: opendes
+        - name: offset
+          in: query
+          description: offset
+          required: false
+          type: integer
+          default: 0
+          format: int32
+        - name: limit
+          in: query
+          description: limit
+          required: false
+          type: integer
+          default: 100
+          format: int32
+        - name: mode
+          in: query
+          description: mode
+          required: false
+          type: string
+          default: persistableReference
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/CTResults'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      security:
+        - Bearer Authorization: []
+    post:
+      tags:
+        - crs-catalog-api
+      summary: getCT
+      operationId: getCTUsingPOST
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      parameters:
+        - name: data-partition-id
+          in: header
+          description: tenant
+          required: true
+          type: string
+          default: opendes
+        - in: body
+          name: request
+          description: request
+          required: true
+          schema:
+            $ref: '#/definitions/CTRequest'
+        - name: mode
+          in: query
+          description: mode
+          required: false
+          type: string
+          default: persistableReference
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/CT'
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      security:
+        - Bearer Authorization: []
+  /v2/earlyboundcrs:
+    get:
+      tags:
+        - crs-catalog-api
+      summary: getEarlyBoundCRSes
+      operationId: getEarlyBoundCRSesUsingGET
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      parameters:
+        - name: data-partition-id
+          in: header
+          description: tenant
+          required: true
+          type: string
+          default: opendes
+        - name: offset
+          in: query
+          description: offset
+          required: false
+          type: integer
+          default: 0
+          format: int32
+        - name: limit
+          in: query
+          description: limit
+          required: false
+          type: integer
+          default: 100
+          format: int32
+        - name: mode
+          in: query
+          description: mode
+          required: false
+          type: string
+          default: persistableReference
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/EarlyBoundCRSResults'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      security:
+        - Bearer Authorization: []
+    post:
+      tags:
+        - crs-catalog-api
+      summary: getEarlyBoundCRS
+      operationId: getEarlyBoundCRSUsingPOST
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      parameters:
+        - name: data-partition-id
+          in: header
+          description: tenant
+          required: true
+          type: string
+          default: opendes
+        - in: body
+          name: request
+          description: request
+          required: true
+          schema:
+            $ref: '#/definitions/EarlyBoundCRSRequest'
+        - name: mode
+          in: query
+          description: mode
+          required: false
+          type: string
+          default: persistableReference
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/EarlyBoundCRS'
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      security:
+        - Bearer Authorization: []
+  /v2/lateboundcrs:
+    get:
+      tags:
+        - crs-catalog-api
+      summary: getLateBoundCRSes
+      operationId: getLateBoundCRSesUsingGET
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      parameters:
+        - name: data-partition-id
+          in: header
+          description: tenant
+          required: true
+          type: string
+          default: opendes
+        - name: offset
+          in: query
+          description: offset
+          required: false
+          type: integer
+          default: 0
+          format: int32
+        - name: limit
+          in: query
+          description: limit
+          required: false
+          type: integer
+          default: 100
+          format: int32
+        - name: mode
+          in: query
+          description: mode
+          required: false
+          type: string
+          default: persistableReference
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/LateBoundCRSResults'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      security:
+        - Bearer Authorization: []
+    post:
+      tags:
+        - crs-catalog-api
+      summary: getLateBoundCRS
+      operationId: getLateBoundCRSUsingPOST
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      parameters:
+        - name: data-partition-id
+          in: header
+          description: tenant
+          required: true
+          type: string
+          default: opendes
+        - in: body
+          name: request
+          description: request
+          required: true
+          schema:
+            $ref: '#/definitions/LateBoundCRSRequest'
+        - name: mode
+          in: query
+          description: mode
+          required: false
+          type: string
+          default: persistableReference
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/LateBoundCRS'
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      security:
+        - Bearer Authorization: []
+  /v2/search/area:
+    post:
+      tags:
+        - crs-catalog-api
+      summary: searchAreasOfUse
+      operationId: searchAreasOfUseUsingPOST
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      parameters:
+        - name: data-partition-id
+          in: header
+          description: tenant
+          required: true
+          type: string
+          default: opendes
+        - in: body
+          name: request
+          description: request
+          required: true
+          schema:
+            $ref: '#/definitions/SearchRequest'
+        - name: longitudeLeft
+          in: query
+          description: longitudeLeft
+          required: false
+          type: number
+          default: -180
+          format: double
+        - name: latitudeLower
+          in: query
+          description: latitudeLower
+          required: false
+          type: number
+          default: -90
+          format: double
+        - name: longitudeRight
+          in: query
+          description: longitudeRight
+          required: false
+          type: number
+          default: 180
+          format: double
+        - name: latitudeUpper
+          in: query
+          description: latitudeUpper
+          required: false
+          type: number
+          default: 90
+          format: double
+        - name: offset
+          in: query
+          description: offset
+          required: false
+          type: integer
+          default: 0
+          format: int32
+        - name: limit
+          in: query
+          description: limit
+          required: false
+          type: integer
+          default: 100
+          format: int32
+        - name: mode
+          in: query
+          description: mode
+          required: false
+          type: string
+          default: persistableReference
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/AreaOfUseResults'
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      security:
+        - Bearer Authorization: []
+  /v2/search/crs:
+    post:
+      tags:
+        - crs-catalog-api
+      summary: searchCRSes
+      operationId: searchCRSesUsingPOST
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      parameters:
+        - name: data-partition-id
+          in: header
+          description: tenant
+          required: true
+          type: string
+          default: opendes
+        - in: body
+          name: request
+          description: request
+          required: true
+          schema:
+            $ref: '#/definitions/SearchRequest'
+        - name: longitudeLeft
+          in: query
+          description: longitudeLeft
+          required: false
+          type: number
+          default: -180
+          format: double
+        - name: latitudeLower
+          in: query
+          description: latitudeLower
+          required: false
+          type: number
+          default: -90
+          format: double
+        - name: longitudeRight
+          in: query
+          description: longitudeRight
+          required: false
+          type: number
+          default: 180
+          format: double
+        - name: latitudeUpper
+          in: query
+          description: latitudeUpper
+          required: false
+          type: number
+          default: 90
+          format: double
+        - name: offset
+          in: query
+          description: offset
+          required: false
+          type: integer
+          default: 0
+          format: int32
+        - name: limit
+          in: query
+          description: limit
+          required: false
+          type: integer
+          default: 100
+          format: int32
+        - name: mode
+          in: query
+          description: mode
+          required: false
+          type: string
+          default: persistableReference
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/CRSResults'
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      security:
+        - Bearer Authorization: []
+  /v2/search/ct:
+    post:
+      tags:
+        - crs-catalog-api
+      summary: searchCTs
+      operationId: searchCTsUsingPOST
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      parameters:
+        - name: data-partition-id
+          in: header
+          description: tenant
+          required: true
+          type: string
+          default: opendes
+        - in: body
+          name: request
+          description: request
+          required: true
+          schema:
+            $ref: '#/definitions/SearchRequest'
+        - name: longitudeLeft
+          in: query
+          description: longitudeLeft
+          required: false
+          type: number
+          default: -180
+          format: double
+        - name: latitudeLower
+          in: query
+          description: latitudeLower
+          required: false
+          type: number
+          default: -90
+          format: double
+        - name: longitudeRight
+          in: query
+          description: longitudeRight
+          required: false
+          type: number
+          default: 180
+          format: double
+        - name: latitudeUpper
+          in: query
+          description: latitudeUpper
+          required: false
+          type: number
+          default: 90
+          format: double
+        - name: offset
+          in: query
+          description: offset
+          required: false
+          type: integer
+          default: 0
+          format: int32
+        - name: limit
+          in: query
+          description: limit
+          required: false
+          type: integer
+          default: 100
+          format: int32
+        - name: mode
+          in: query
+          description: mode
+          required: false
+          type: string
+          default: persistableReference
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/CTResults'
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      security:
+        - Bearer Authorization: []
+  /v2/singlect:
+    get:
+      tags:
+        - crs-catalog-api
+      summary: getSingleCTs
+      operationId: getSingleCTsUsingGET
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      parameters:
+        - name: data-partition-id
+          in: header
+          description: tenant
+          required: true
+          type: string
+          default: opendes
+        - name: offset
+          in: query
+          description: offset
+          required: false
+          type: integer
+          default: 0
+          format: int32
+        - name: limit
+          in: query
+          description: limit
+          required: false
+          type: integer
+          default: 100
+          format: int32
+        - name: mode
+          in: query
+          description: mode
+          required: false
+          type: string
+          default: persistableReference
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/SingleCTResults'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      security:
+        - Bearer Authorization: []
+    post:
+      tags:
+        - crs-catalog-api
+      summary: getSingleCT
+      operationId: getSingleCTUsingPOST
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      parameters:
+        - name: data-partition-id
+          in: header
+          description: tenant
+          required: true
+          type: string
+          default: opendes
+        - in: body
+          name: request
+          description: request
+          required: true
+          schema:
+            $ref: '#/definitions/SingleCTRequest'
+        - name: mode
+          in: query
+          description: mode
+          required: false
+          type: string
+          default: persistableReference
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/SingleCT'
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      security:
+        - Bearer Authorization: []
+securityDefinitions:
+  Bearer Authorization:
+    type: apiKey
+    name: Authorization
+    in: header
+definitions:
+  AreaOfUse:
+    type: object
+    properties:
+      aliasNames:
+        type: array
+        items:
+          type: string
+      areaOfUseDeprecationInfo:
+        $ref: '#/definitions/AreaOfUseDeprecationInfo'
+      areaOfUseEssence:
+        $ref: '#/definitions/AreaOfUseEssence'
+      deprecationInfo:
+        $ref: '#/definitions/DeprecationInfo'
+      description:
+        type: string
+      essence:
+        $ref: '#/definitions/Essence'
+      lastModified:
+        type: string
+      name:
+        type: string
+      namedReference:
+        $ref: '#/definitions/NamedReference'
+  AreaOfUseDeprecationInfo:
+    type: object
+    properties:
+      deprecationState:
+        type: string
+      remarks:
+        type: string
+      supersededByArea:
+        $ref: '#/definitions/AreaOfUse'
+  AreaOfUseEssence:
+    type: object
+    properties:
+      authorityCode:
+        $ref: '#/definitions/AuthorityCode'
+      boundingBox:
+        $ref: '#/definitions/SphericalBoundingBox'
+      name:
+        type: string
+      type:
+        type: string
+  AreaOfUseEssenceImpl:
+    type: object
+    properties:
+      authCode:
+        $ref: '#/definitions/AuthorityCodeImpl'
+      boundBox:
+        $ref: '#/definitions/SphericalBoundingBoxImpl'
+      name:
+        type: string
+      type:
+        type: string
+  AreaOfUseRequest:
+    type: object
+    properties:
+      essence:
+        $ref: '#/definitions/AreaOfUseEssenceImpl'
+      persistableReference:
+        type: string
+  AreaOfUseResults:
+    type: object
+    properties:
+      areasOfUse:
+        type: array
+        items:
+          $ref: '#/definitions/AreaOfUse'
+      count:
+        type: integer
+        format: int32
+      offset:
+        type: integer
+        format: int32
+      totalCount:
+        type: integer
+        format: int32
+  AuthorityCode:
+    type: object
+    properties:
+      authority:
+        type: string
+      code:
+        type: string
+  AuthorityCodeImpl:
+    type: object
+    properties:
+      auth:
+        type: string
+      code:
+        type: string
+  CRS:
+    type: object
+    properties:
+      aliasNames:
+        type: array
+        items:
+          type: string
+      areaOfUse:
+        $ref: '#/definitions/AreaOfUse'
+      axisUnits:
+        type: array
+        items:
+          type: string
+      baseCRSAuthorityCode:
+        $ref: '#/definitions/AuthorityCode'
+      crsdeprecationInfo:
+        $ref: '#/definitions/CRSDeprecationInfo'
+      crstype:
+        type: string
+      deprecationInfo:
+        $ref: '#/definitions/DeprecationInfo'
+      description:
+        type: string
+      essence:
+        $ref: '#/definitions/Essence'
+      lastModified:
+        type: string
+      namedReference:
+        $ref: '#/definitions/NamedReference'
+      numberOfAxes:
+        type: integer
+        format: int32
+      source:
+        type: string
+      transformationReady:
+        type: boolean
+  CRSDeprecationInfo:
+    type: object
+    properties:
+      deprecationState:
+        type: string
+      remarks:
+        type: string
+      supersededByCRS:
+        $ref: '#/definitions/CRS'
+  CRSEssence:
+    type: object
+    properties:
+      authorityCode:
+        $ref: '#/definitions/AuthorityCode'
+      engineVersion:
+        type: string
+      name:
+        type: string
+      type:
+        type: string
+  CRSEssenceImpl:
+    type: object
+    properties:
+      authCode:
+        $ref: '#/definitions/AuthorityCodeImpl'
+      name:
+        type: string
+      type:
+        type: string
+      ver:
+        type: string
+  CRSRequest:
+    type: object
+    properties:
+      crsessenceJson:
+        $ref: '#/definitions/CRSEssenceImpl'
+      essence:
+        $ref: '#/definitions/CRSEssenceImpl'
+      persistableReference:
+        type: string
+  CRSResults:
+    type: object
+    properties:
+      count:
+        type: integer
+        format: int32
+      crses:
+        type: array
+        items:
+          $ref: '#/definitions/CRS'
+      offset:
+        type: integer
+        format: int32
+      totalCount:
+        type: integer
+        format: int32
+  CT:
+    type: object
+    properties:
+      aliasNames:
+        type: array
+        items:
+          type: string
+      areaOfUse:
+        $ref: '#/definitions/AreaOfUse'
+      ctdeprecationInfo:
+        $ref: '#/definitions/CTDeprecationInfo'
+      deprecationInfo:
+        $ref: '#/definitions/DeprecationInfo'
+      description:
+        type: string
+      essence:
+        $ref: '#/definitions/Essence'
+      fromCRSAuthorityCode:
+        $ref: '#/definitions/AuthorityCode'
+      lastModified:
+        type: string
+      namedReference:
+        $ref: '#/definitions/NamedReference'
+      source:
+        type: string
+      toCRSAuthorityCode:
+        $ref: '#/definitions/AuthorityCode'
+  CTDeprecationInfo:
+    type: object
+    properties:
+      deprecationState:
+        type: string
+      remarks:
+        type: string
+      supersededByCT:
+        $ref: '#/definitions/CT'
+  CTEssence:
+    type: object
+    properties:
+      authorityCode:
+        $ref: '#/definitions/AuthorityCode'
+      engineVersion:
+        type: string
+      name:
+        type: string
+      type:
+        type: string
+  CTEssenceImpl:
+    type: object
+    properties:
+      authCode:
+        $ref: '#/definitions/AuthorityCodeImpl'
+      name:
+        type: string
+      type:
+        type: string
+      ver:
+        type: string
+  CTRequest:
+    type: object
+    properties:
+      ctessenceJson:
+        $ref: '#/definitions/CTEssenceImpl'
+      essence:
+        $ref: '#/definitions/CTEssenceImpl'
+      persistableReference:
+        type: string
+  CTResults:
+    type: object
+    properties:
+      count:
+        type: integer
+        format: int32
+      cts:
+        type: array
+        items:
+          $ref: '#/definitions/CT'
+      offset:
+        type: integer
+        format: int32
+      totalCount:
+        type: integer
+        format: int32
+  Catalog:
+    type: object
+    properties:
+      allCRSes:
+        type: array
+        items:
+          $ref: '#/definitions/CRS'
+      allCTs:
+        type: array
+        items:
+          $ref: '#/definitions/CT'
+      areaOfUseCount:
+        type: integer
+        format: int32
+      areasOfUse:
+        type: array
+        items:
+          $ref: '#/definitions/AreaOfUse'
+      attributes:
+        $ref: '#/definitions/CatalogAttributes'
+      catalogResponse:
+        $ref: '#/definitions/Catalog'
+      compoundCRSes:
+        type: array
+        items:
+          $ref: '#/definitions/CompoundCRS'
+      compoundCRSesCount:
+        type: integer
+        format: int32
+      compoundCTs:
+        type: array
+        items:
+          $ref: '#/definitions/CompoundCT'
+      compoundCTsCount:
+        type: integer
+        format: int32
+      earlyBoundCRSes:
+        type: array
+        items:
+          $ref: '#/definitions/EarlyBoundCRS'
+      earlyBoundCRSesCount:
+        type: integer
+        format: int32
+      lateBoundCRSes:
+        type: array
+        items:
+          $ref: '#/definitions/LateBoundCRS'
+      lateBoundCRSesCount:
+        type: integer
+        format: int32
+      singleCTs:
+        type: array
+        items:
+          $ref: '#/definitions/SingleCT'
+      singleCTsCount:
+        type: integer
+        format: int32
+  CatalogAttributes:
+    type: object
+    properties:
+      description:
+        type: string
+      lastModified:
+        type: string
+      name:
+        type: string
+  CompoundCRS:
+    type: object
+    properties:
+      aliasNames:
+        type: array
+        items:
+          type: string
+      areaOfUse:
+        $ref: '#/definitions/AreaOfUse'
+      axisUnits:
+        type: array
+        items:
+          type: string
+      baseCRSAuthorityCode:
+        $ref: '#/definitions/AuthorityCode'
+      compoundCRSEssence:
+        $ref: '#/definitions/CompoundCRSEssence'
+      crsdeprecationInfo:
+        $ref: '#/definitions/CRSDeprecationInfo'
+      crstype:
+        type: string
+      deprecationInfo:
+        $ref: '#/definitions/DeprecationInfo'
+      description:
+        type: string
+      essence:
+        $ref: '#/definitions/Essence'
+      lastModified:
+        type: string
+      namedReference:
+        $ref: '#/definitions/NamedReference'
+      numberOfAxes:
+        type: integer
+        format: int32
+      source:
+        type: string
+      transformationReady:
+        type: boolean
+  CompoundCRSEssence:
+    type: object
+    properties:
+      authorityCode:
+        $ref: '#/definitions/AuthorityCode'
+      engineVersion:
+        type: string
+      horizontalCRSAuthorityCode:
+        $ref: '#/definitions/AuthorityCode'
+      horizontalCRSEssence:
+        $ref: '#/definitions/CRSEssence'
+      name:
+        type: string
+      type:
+        type: string
+      verticalCRSAuthorityCode:
+        $ref: '#/definitions/AuthorityCode'
+      verticalCRSEssence:
+        $ref: '#/definitions/CRSEssence'
+  CompoundCRSEssenceImpl:
+    type: object
+    properties:
+      authCode:
+        $ref: '#/definitions/AuthorityCodeImpl'
+      horizontalCRS:
+        $ref: '#/definitions/Essence'
+      horzEarlyBoundCRS:
+        $ref: '#/definitions/EarlyBoundCRSEssenceImpl'
+      horzLateBoundCRS:
+        $ref: '#/definitions/LateBoundCRSEssenceImpl'
+      name:
+        type: string
+      type:
+        type: string
+      ver:
+        type: string
+      vertEarlyBoundCRS:
+        $ref: '#/definitions/EarlyBoundCRSEssenceImpl'
+      vertLateBoundCRS:
+        $ref: '#/definitions/LateBoundCRSEssenceImpl'
+      verticalCRS:
+        $ref: '#/definitions/Essence'
+  CompoundCRSRequest:
+    type: object
+    properties:
+      essence:
+        $ref: '#/definitions/CompoundCRSEssenceImpl'
+      persistableReference:
+        type: string
+  CompoundCRSResults:
+    type: object
+    properties:
+      count:
+        type: integer
+        format: int32
+      crses:
+        type: array
+        items:
+          $ref: '#/definitions/CompoundCRS'
+      offset:
+        type: integer
+        format: int32
+      totalCount:
+        type: integer
+        format: int32
+  CompoundCT:
+    type: object
+    properties:
+      aliasNames:
+        type: array
+        items:
+          type: string
+      areaOfUse:
+        $ref: '#/definitions/AreaOfUse'
+      compoundCTEssence:
+        $ref: '#/definitions/CompoundCTEssence'
+      ctdeprecationInfo:
+        $ref: '#/definitions/CTDeprecationInfo'
+      cts:
+        type: array
+        items:
+          $ref: '#/definitions/SingleCT'
+      deprecationInfo:
+        $ref: '#/definitions/DeprecationInfo'
+      description:
+        type: string
+      essence:
+        $ref: '#/definitions/Essence'
+      fromCRSAuthorityCode:
+        $ref: '#/definitions/AuthorityCode'
+      lastModified:
+        type: string
+      namedReference:
+        $ref: '#/definitions/NamedReference'
+      source:
+        type: string
+      toCRSAuthorityCode:
+        $ref: '#/definitions/AuthorityCode'
+  CompoundCTEssence:
+    type: object
+    properties:
+      authorityCode:
+        $ref: '#/definitions/AuthorityCode'
+      ctauthorityCodes:
+        type: array
+        items:
+          $ref: '#/definitions/AuthorityCode'
+      ctessences:
+        type: array
+        items:
+          $ref: '#/definitions/CTEssence'
+      engineVersion:
+        type: string
+      name:
+        type: string
+      policy:
+        type: string
+      type:
+        type: string
+  CompoundCTEssenceImpl:
+    type: object
+    properties:
+      authCode:
+        $ref: '#/definitions/AuthorityCodeImpl'
+      cts:
+        type: array
+        items:
+          $ref: '#/definitions/SingleCTEssenceImpl'
+      name:
+        type: string
+      policy:
+        type: string
+      type:
+        type: string
+      ver:
+        type: string
+  CompoundCTRequest:
+    type: object
+    properties:
+      essence:
+        $ref: '#/definitions/CompoundCTEssenceImpl'
+      persistableReference:
+        type: string
+  CompoundCTResults:
+    type: object
+    properties:
+      count:
+        type: integer
+        format: int32
+      cts:
+        type: array
+        items:
+          $ref: '#/definitions/CompoundCT'
+      offset:
+        type: integer
+        format: int32
+      totalCount:
+        type: integer
+        format: int32
+  DeprecationInfo:
+    type: object
+    properties:
+      deprecationState:
+        type: string
+      remarks:
+        type: string
+  EarlyBoundCRS:
+    type: object
+    properties:
+      aliasNames:
+        type: array
+        items:
+          type: string
+      areaOfUse:
+        $ref: '#/definitions/AreaOfUse'
+      axisUnits:
+        type: array
+        items:
+          type: string
+      baseCRSAuthorityCode:
+        $ref: '#/definitions/AuthorityCode'
+      crsdeprecationInfo:
+        $ref: '#/definitions/CRSDeprecationInfo'
+      crstype:
+        type: string
+      deprecationInfo:
+        $ref: '#/definitions/DeprecationInfo'
+      description:
+        type: string
+      earlyBoundCRSEssence:
+        $ref: '#/definitions/EarlyBoundCRSEssence'
+      essence:
+        $ref: '#/definitions/Essence'
+      lastModified:
+        type: string
+      namedReference:
+        $ref: '#/definitions/NamedReference'
+      numberOfAxes:
+        type: integer
+        format: int32
+      source:
+        type: string
+      transformationReady:
+        type: boolean
+  EarlyBoundCRSEssence:
+    type: object
+    properties:
+      authorityCode:
+        $ref: '#/definitions/AuthorityCode'
+      ctauthorityCode:
+        $ref: '#/definitions/AuthorityCode'
+      ctessence:
+        $ref: '#/definitions/CTEssence'
+      engineVersion:
+        type: string
+      lateBoundCRSAuthorityCode:
+        $ref: '#/definitions/AuthorityCode'
+      lateBoundCRSEssence:
+        $ref: '#/definitions/LateBoundCRSEssence'
+      name:
+        type: string
+      type:
+        type: string
+  EarlyBoundCRSEssenceImpl:
+    type: object
+    properties:
+      authCode:
+        $ref: '#/definitions/AuthorityCodeImpl'
+      compoundCT:
+        $ref: '#/definitions/CompoundCTEssenceImpl'
+      lateBoundCRS:
+        $ref: '#/definitions/LateBoundCRSEssenceImpl'
+      name:
+        type: string
+      singleCT:
+        $ref: '#/definitions/SingleCTEssenceImpl'
+      type:
+        type: string
+      ver:
+        type: string
+  EarlyBoundCRSRequest:
+    type: object
+    properties:
+      essence:
+        $ref: '#/definitions/EarlyBoundCRSEssenceImpl'
+      persistableReference:
+        type: string
+  EarlyBoundCRSResults:
+    type: object
+    properties:
+      count:
+        type: integer
+        format: int32
+      crses:
+        type: array
+        items:
+          $ref: '#/definitions/EarlyBoundCRS'
+      offset:
+        type: integer
+        format: int32
+      totalCount:
+        type: integer
+        format: int32
+  Essence:
+    type: object
+    properties:
+      authorityCode:
+        $ref: '#/definitions/AuthorityCode'
+      type:
+        type: string
+  LateBoundCRS:
+    type: object
+    properties:
+      aliasNames:
+        type: array
+        items:
+          type: string
+      areaOfUse:
+        $ref: '#/definitions/AreaOfUse'
+      axisUnits:
+        type: array
+        items:
+          type: string
+      baseCRSAuthorityCode:
+        $ref: '#/definitions/AuthorityCode'
+      crsdeprecationInfo:
+        $ref: '#/definitions/CRSDeprecationInfo'
+      crstype:
+        type: string
+      deprecationInfo:
+        $ref: '#/definitions/DeprecationInfo'
+      description:
+        type: string
+      essence:
+        $ref: '#/definitions/Essence'
+      lastModified:
+        type: string
+      lateBoundCRSEssence:
+        $ref: '#/definitions/LateBoundCRSEssence'
+      namedReference:
+        $ref: '#/definitions/NamedReference'
+      numberOfAxes:
+        type: integer
+        format: int32
+      source:
+        type: string
+      transformationReady:
+        type: boolean
+  LateBoundCRSEssence:
+    type: object
+    properties:
+      authorityCode:
+        $ref: '#/definitions/AuthorityCode'
+      engineVersion:
+        type: string
+      name:
+        type: string
+      type:
+        type: string
+      wellKnownText:
+        type: string
+  LateBoundCRSEssenceImpl:
+    type: object
+    properties:
+      authCode:
+        $ref: '#/definitions/AuthorityCodeImpl'
+      name:
+        type: string
+      type:
+        type: string
+      ver:
+        type: string
+      wkt:
+        type: string
+  LateBoundCRSRequest:
+    type: object
+    properties:
+      essence:
+        $ref: '#/definitions/LateBoundCRSEssenceImpl'
+      persistableReference:
+        type: string
+  LateBoundCRSResults:
+    type: object
+    properties:
+      count:
+        type: integer
+        format: int32
+      crses:
+        type: array
+        items:
+          $ref: '#/definitions/LateBoundCRS'
+      offset:
+        type: integer
+        format: int32
+      totalCount:
+        type: integer
+        format: int32
+  NamedReference:
+    type: object
+    properties:
+      name:
+        type: string
+      persistableReference:
+        type: string
+  SearchRequest:
+    type: object
+    properties:
+      query:
+        type: string
+  SingleCT:
+    type: object
+    properties:
+      aliasNames:
+        type: array
+        items:
+          type: string
+      areaOfUse:
+        $ref: '#/definitions/AreaOfUse'
+      ctdeprecationInfo:
+        $ref: '#/definitions/CTDeprecationInfo'
+      deprecationInfo:
+        $ref: '#/definitions/DeprecationInfo'
+      description:
+        type: string
+      essence:
+        $ref: '#/definitions/Essence'
+      fromCRSAuthorityCode:
+        $ref: '#/definitions/AuthorityCode'
+      lastModified:
+        type: string
+      namedReference:
+        $ref: '#/definitions/NamedReference'
+      singleCTEssence:
+        $ref: '#/definitions/SingleCTEssence'
+      source:
+        type: string
+      toCRSAuthorityCode:
+        $ref: '#/definitions/AuthorityCode'
+  SingleCTEssence:
+    type: object
+    properties:
+      authorityCode:
+        $ref: '#/definitions/AuthorityCode'
+      engineVersion:
+        type: string
+      name:
+        type: string
+      type:
+        type: string
+      wellKnownText:
+        type: string
+  SingleCTEssenceImpl:
+    type: object
+    properties:
+      authCode:
+        $ref: '#/definitions/AuthorityCodeImpl'
+      name:
+        type: string
+      type:
+        type: string
+      ver:
+        type: string
+      wkt:
+        type: string
+  SingleCTRequest:
+    type: object
+    properties:
+      essence:
+        $ref: '#/definitions/SingleCTEssenceImpl'
+      persistableReference:
+        type: string
+  SingleCTResults:
+    type: object
+    properties:
+      count:
+        type: integer
+        format: int32
+      cts:
+        type: array
+        items:
+          $ref: '#/definitions/SingleCT'
+      offset:
+        type: integer
+        format: int32
+      totalCount:
+        type: integer
+        format: int32
+  SphericalBoundingBox:
+    type: object
+    properties:
+      latitudeLower:
+        type: number
+        format: double
+      latitudeUpper:
+        type: number
+        format: double
+      longitudeLeft:
+        type: number
+        format: double
+      longitudeRight:
+        type: number
+        format: double
+  SphericalBoundingBoxImpl:
+    type: object
+    properties:
+      latMax:
+        type: number
+        format: double
+      latMin:
+        type: number
+        format: double
+      lonMax:
+        type: number
+        format: double
+      lonMin:
+        type: number
+        format: double

@@ -1,0 +1,284 @@
+swagger: '2.0'
+info:
+  description: Ingestion of OSDU Data
+  version: '1.0'
+  title: Workflow API
+host: 'localhost:8082'
+basePath: /v1
+tags:
+  - name: health-check-api
+    description: Health Check Api
+  - name: workflow-api
+    description: Workflow Api
+  - name: workflow-status-api
+    description: Workflow Status Api
+paths:
+  /getStatus:
+    post:
+      tags:
+        - workflow-status-api
+      summary: API endpoint returns the current status of a workflow job
+      operationId: getWorkflowStatusUsingPOST
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      parameters:
+        - name: Authorization
+          in: header
+          description: In the form of `Bearer <JWT Token>`
+          required: true
+          type: string
+        - name: Content-Type
+          in: header
+          description: The file type/format of the request body
+          required: true
+          type: string
+          default: application/json
+        - name: data-partition-id
+          in: header
+          description: Which tenant to use
+          required: true
+          type: string
+          default: opendes
+        - in: body
+          name: request
+          description: request
+          required: true
+          schema:
+            $ref: '#/definitions/GetStatusRequest'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/GetStatusResponse'
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  /liveness_check:
+    get:
+      tags:
+        - health-check-api
+      summary: livenessCheck
+      operationId: livenessCheckUsingGET
+      produces:
+        - '*/*'
+      parameters:
+        - name: Content-Type
+          in: header
+          description: The file type/format of the request body
+          required: true
+          type: string
+          default: application/json
+        - name: data-partition-id
+          in: header
+          description: Which tenant to use
+          required: true
+          type: string
+          default: opendes
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: string
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  /readiness_check:
+    get:
+      tags:
+        - health-check-api
+      summary: readinessCheck
+      operationId: readinessCheckUsingGET
+      produces:
+        - '*/*'
+      parameters:
+        - name: Content-Type
+          in: header
+          description: The file type/format of the request body
+          required: true
+          type: string
+          default: application/json
+        - name: data-partition-id
+          in: header
+          description: Which tenant to use
+          required: true
+          type: string
+          default: opendes
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: string
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  /startWorkflow:
+    post:
+      tags:
+        - workflow-api
+      summary: startWorkflow
+      operationId: startWorkflowUsingPOST
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      parameters:
+        - name: Authorization
+          in: header
+          description: In the form of `Bearer <JWT Token>`
+          required: true
+          type: string
+        - name: Content-Type
+          in: header
+          description: The file type/format of the request body
+          required: true
+          type: string
+          default: application/json
+        - name: data-partition-id
+          in: header
+          description: Which tenant to use
+          required: true
+          type: string
+          default: opendes
+        - in: body
+          name: request
+          description: request
+          required: true
+          schema:
+            $ref: '#/definitions/StartWorkflowRequest'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/StartWorkflowResponse'
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  /updateStatus:
+    post:
+      tags:
+        - workflow-status-api
+      summary: updateWorkflowStatus
+      operationId: updateWorkflowStatusUsingPOST
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      parameters:
+        - name: Authorization
+          in: header
+          description: In the form of `Bearer <JWT Token>`
+          required: true
+          type: string
+        - name: Content-Type
+          in: header
+          description: The file type/format of the request body
+          required: true
+          type: string
+          default: application/json
+        - name: data-partition-id
+          in: header
+          description: Which tenant to use
+          required: true
+          type: string
+          default: opendes
+        - in: body
+          name: request
+          description: request
+          required: true
+          schema:
+            $ref: '#/definitions/UpdateStatusRequest'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/UpdateStatusResponse'
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+    
+definitions:
+  GetStatusRequest:
+    type: object
+    properties:
+      WorkflowID:
+        type: string
+    title: GetStatusRequest
+  GetStatusResponse:
+    type: object
+    properties:
+      Status:
+        type: string
+        enum:
+          - SUBMITTED
+          - RUNNING
+          - FINISHED
+          - FAILED
+    title: GetStatusResponse
+  StartWorkflowRequest:
+    type: object
+    properties:
+      Context:
+        type: object
+      DataType:
+        type: string
+      WorkflowType:
+        type: string
+        enum:
+          - INGEST
+          - OSDU
+    title: StartWorkflowRequest
+  StartWorkflowResponse:
+    type: object
+    properties:
+      WorkflowID:
+        type: string
+    title: StartWorkflowResponse
+  UpdateStatusRequest:
+    type: object
+    properties:
+      Status:
+        type: string
+        enum:
+          - SUBMITTED
+          - RUNNING
+          - FINISHED
+          - FAILED
+      WorkflowID:
+        type: string
+    title: UpdateStatusRequest
+  UpdateStatusResponse:
+    type: object
+    properties:
+      Status:
+        type: string
+        enum:
+          - SUBMITTED
+          - RUNNING
+          - FINISHED
+          - FAILED
+      WorkflowID:
+        type: string
+    title: UpdateStatusResponse

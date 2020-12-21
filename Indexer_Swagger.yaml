@@ -1,0 +1,185 @@
+openapi: 3.0.1
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+  - url: 'http://localhost:8083/api/indexer/v2'
+    description: Generated server url
+paths:
+  /_dps/task-handlers/index-worker:
+    post:
+      tags:
+        - record-indexer-api
+      operationId: indexWorker
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RecordChangedMessages'
+      responses:
+        '200':
+          description: default response
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/JobStatus'
+  /_dps/task-handlers/reindex-worker:
+    post:
+      tags:
+        - record-indexer-api
+      operationId: reindex
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RecordReindexRequest'
+      responses:
+        '200':
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: object
+  /reindex:
+    post:
+      tags:
+        - reindex-api
+      operationId: reindex_1
+      parameters:
+        - name: force_clean
+          in: query
+          required: false
+          schema:
+            type: boolean
+            default: false
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RecordReindexRequest'
+      responses:
+        '200':
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: object
+  /index-cleanup:
+    post:
+      tags:
+        - cleanup-indicies-api
+      operationId: cleanupIndices
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RecordChangedMessages'
+      responses:
+        '200':
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+  /liveness_check:
+    get:
+      tags:
+        - health-check-api
+      operationId: livenessCheck
+      responses:
+        '200':
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+  /readiness_check:
+    get:
+      tags:
+        - health-check-api
+      operationId: readinessCheck
+      responses:
+        '200':
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+components:
+  schemas:
+    RecordChangedMessages:
+      type: object
+      properties:
+        messageId:
+          type: string
+        publishTime:
+          type: string
+        data:
+          type: string
+        attributes:
+          type: object
+          additionalProperties:
+            type: string
+        correlationId:
+          type: string
+        dataPartitionId:
+          type: string
+    IndexProgress:
+      type: object
+      properties:
+        statusCode:
+          type: integer
+          format: int32
+        trace:
+          type: array
+          items:
+            type: string
+        lastUpdateTime:
+          type: string
+    JaxRsDpsLog:
+      type: object
+    JobStatus:
+      type: object
+      properties:
+        jaxRsDpsLog:
+          $ref: '#/components/schemas/JaxRsDpsLog'
+        statusesList:
+          type: array
+          items:
+            $ref: '#/components/schemas/RecordStatus'
+        debugInfos:
+          type: array
+          items:
+            type: string
+        idsByValidUpsertIndexingStatus:
+          type: array
+          items:
+            type: string
+    RecordStatus:
+      type: object
+      properties:
+        id:
+          type: string
+        kind:
+          type: string
+        operationType:
+          type: string
+        status:
+          type: string
+          enum:
+            - PROCESSING
+            - SUCCESS
+            - WARN
+            - SKIP
+            - FAIL
+        indexProgress:
+          $ref: '#/components/schemas/IndexProgress'
+        latestTrace:
+          type: string
+    RecordReindexRequest:
+      type: object
+      properties:
+        kind:
+          type: string
+        cursor:
+          type: string
